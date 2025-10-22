@@ -1,31 +1,14 @@
-version: "3.9"
+version: '3.8'
 
 services:
   web:
     build: .
-    container_name: flask-rutas
+    container_name: flask-app
     ports:
       - "5000:5000"
-    environment:
-      FLASK_APP: app.py
-      FLASK_RUN_HOST: 0.0.0.0
-      FLASK_RUN_PORT: 5000
     volumes:
       - .:/app
-    restart: unless-stopped
-    profiles: ["dev"]
-    command: flask run
-
-  web-prod:
-    build: .
-    container_name: flask-rutas-prod
-    ports:
-      - "5000:5000"
     environment:
-      PYTHONUNBUFFERED: "1"
+      - FLASK_ENV=development
+      - FLASK_DEBUG=1
     restart: unless-stopped
-    # Requiere agregar gunicorn a requirements.txt si aún no lo hiciste:
-    # gunicorn==21.2.0 (o similar)
-    command: >
-      sh -c "gunicorn -w 2 -b 0.0.0.0:5000 app:app"
-    profiles: ["prod"]
